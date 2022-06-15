@@ -1,6 +1,7 @@
-import firebase from './FirebaseConfig'
+import {app} from "./FirebaseConfig";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-const auth = firebase.auth()
+const auth = getAuth(app)
 
 const registerUser = (email, password) => {
   return auth.createUserWithEmailAndPassword(email, password)
@@ -19,7 +20,7 @@ const sendPasswordResetEmail = (email) => {
 }
 
 const loginWithGoogle = () => {
-  const provider = new firebase.auth.GoogleAuthProvider()
+  const provider = new GoogleAuthProvider()
 
   return auth.signInWithPopup(provider)
 }
