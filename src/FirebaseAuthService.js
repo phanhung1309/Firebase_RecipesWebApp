@@ -1,32 +1,41 @@
 import {app} from "./FirebaseConfig";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged
+} from "firebase/auth";
 
 const auth = getAuth(app)
 
 const registerUser = (email, password) => {
-  return auth.createUserWithEmailAndPassword(email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
 }
 
 const loginUser = (email, password) => {
-  return auth.signInWithEmailAndPassword(email, password)
+  return signInWithEmailAndPassword(auth, email, password)
 }
 
 const logoutUser = () => {
-  return auth.signOut()
+  return signOut(auth)
 }
 
 const sendPasswordResetEmail = (email) => {
-  return auth.sendPasswordResetEmail(email)
+  return firebaseSendPasswordResetEmail(auth, email)
 }
 
 const loginWithGoogle = () => {
   const provider = new GoogleAuthProvider()
 
-  return auth.signInWithPopup(provider)
+  return signInWithPopup(auth, provider)
 }
 
 const subscribeToAuthChanges = (handleAuthChange) => {
-  auth.onAuthStateChanged((user) => {
+  onAuthStateChanged(auth, (user) => {
     handleAuthChange(user)
   })
 }
