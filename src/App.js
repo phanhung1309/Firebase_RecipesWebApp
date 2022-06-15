@@ -1,12 +1,19 @@
+import React, {useState} from "react"
+import FirebaseAuthService from "./FirebaseAuthService";
+import LoginForm from "./components/LoginForm";
+
 import './App.css';
 
-// import firebase from "./FirebaseConfig";
+const App = () => {
+  const [user, setUser] = useState(null)
 
-function App() {
+  FirebaseAuthService.subscribeToAuthChanges(setUser)
+
   return (
     <div className="App">
       <div className="title-row">
         <div className="title">Firebase Recipes</div>
+        <LoginForm existingUser={user} />
       </div>
     </div>
   );
