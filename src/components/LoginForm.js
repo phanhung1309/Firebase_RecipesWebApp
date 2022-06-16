@@ -9,7 +9,7 @@ const LoginForm = ({existingUser}) => {
     event.preventDefault()
 
     try {
-      await FirebaseAuthService.registerUser(username, password)
+      await FirebaseAuthService.loginUser(username, password)
       setUsername("")
       setPassword("")
     } catch (error) {
@@ -29,6 +29,28 @@ const LoginForm = ({existingUser}) => {
     setPassword(e.target.value)
   }
 
+  const handleResetPassword = async () => {
+    if (!username) {
+      alert("Missing username!")
+      return
+    }
+
+    try {
+      await FirebaseAuthService.sendPasswordResetEmail(username)
+      alert("Sent the password reset email")
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
+  const handleLoginWithGoogle = async () => {
+    try {
+      await FirebaseAuthService.loginWithGoogle()
+    } catch (error) {
+      alert(error.message)
+    }
+  }
+
   return (
     <div className="login-form-container">
       {existingUser ? <div className="row">
@@ -46,7 +68,9 @@ const LoginForm = ({existingUser}) => {
           <input type="password" required value={password} onChange={handleInputPassword} className="input-text"/>
         </label>
         <div className="button-box">
-          <button className="primary-button">Submit</button>
+          <button className="primary-button">Login</button>
+          <button type="button" className="primary-button" onClick={handleResetPassword}>Reset password</button>
+          <button type="button" className="primary-button" onClick={handleLoginWithGoogle}>Login with Google</button>
         </div>
       </form>}
     </div>
